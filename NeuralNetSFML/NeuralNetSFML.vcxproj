@@ -10,6 +10,20 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <CudaCompile Include="drawNeuralNet.cu" />
+    <CudaCompile Include="main.cu" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="SFML_includes.cuh" />
+    <ClInclude Include="TrainingData.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="TrainingData.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="trainingData.txt" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{E7DB0492-7135-F548-B9B1-46AE132746BC}</ProjectGuid>
     <RootNamespace>NeuralNetSFML</RootNamespace>
@@ -82,9 +96,6 @@
       <Include>$(SolutionDir)\include;%(Include)</Include>
     </CudaCompile>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <CudaCompile Include="kernel.cu" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
     <Import Project="$(VCTargetsPath)\BuildCustomizations\CUDA 12.8.targets" />
