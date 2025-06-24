@@ -153,7 +153,7 @@ double Neuron::sumDow(const Layer& nextLayer) {
 		sum += outputWeights[n].weight * nextLayer[n].gradient;
 	}
 	
-	return sum;
+	return sum;	
 }
 
 
@@ -251,13 +251,11 @@ void Net::backProp(const vector<double>& targetVals) {
 		outputLayer[i].calcOutputGradients(targetVals[i]);
 	}
 
-	for (int n = layers.size() - 2;n > 0;n--) {
+	for (int n = layers.size() - 2;n > 0;n--) { // minus one for indexing and minus one for not including the output layer
 		Layer& hiddenLayer = layers[n];
 		Layer& nextLayer = layers[n + 1];
 
-		/*for (int i = 0;i < hiddenLayer.size();i++) {
-			hiddenLayer[i].calcHiddenGradient(nextLayer);
-		}*/
+		
 		for (int i = 0;i < hiddenLayer.size()-1;i++) {
 			hiddenLayer[i].calcHiddenGradient(nextLayer);
 		}

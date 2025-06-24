@@ -196,7 +196,7 @@ int main() {
 		}
 	}
 
-	for (int epoch = 0;epoch < 10;epoch++) {
+	for (int epoch = 0;epoch < 20;epoch++) {
 		cout << "Epoch: " << epoch << "\n";
 
 		HANDLE_ERROR(cudaMemcpy(d_input, inputVals.data(), sizeof(float) * inputVals.size(), cudaMemcpyHostToDevice));

@@ -29,7 +29,7 @@ void drawNeuralNet(sf::RenderWindow& window, sf::Font& font, vector<vector<sf::V
             sf::CircleShape neuron(32.f);
             neuron.setOrigin(32.f, 32.f);
             neuron.setPosition(pos);
-            neuron.setFillColor(sf::Color::Green);
+            neuron.setFillColor(sf::Color::White);
             window.draw(neuron);
 
             sf::Text text;

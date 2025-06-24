@@ -1,0 +1,257 @@
+﻿  Compiling CUDA source file main.cu...
+  
+  C:\Users\admin\source\repos\Neural Network\NeuralNetSFML>"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.8\bin\nvcc.exe" -gencode=arch=compute_52,code=\"sm_52,compute_52\" --use-local-env -ccbin "C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.43.34808\bin\HostX64\x64" -x cu   -I"C:\Users\admin\source\repos\Neural Network\\include" -I"C:\Users\admin\source\repos\Neural Network\\include" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.8\include" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.8\include"  -G   --keep-dir x64\Debug  -maxrregcount=0    --machine 64 --compile -cudart static  -g  -DWIN32 -DWIN64 -D_DEBUG -D_CONSOLE -D_MBCS -Xcompiler "/EHsc /W3 /nologo /Od /FS /Zi /RTC1 /MDd " -Xcompiler "/Fdx64\Debug\vc143.pdb" -o "C:\Users\admin\source\repos\Neural Network\NeuralNetSFML\x64\Debug\main.cu.obj" "C:\Users\admin\source\repos\Neural Network\NeuralNetSFML\main.cu" 
+C:\Users\admin\source\repos\Neural Network\include\SFML/System/String.hpp(527): warning #1394-D: field of class type without a DLL interface used in a class with a DLL interface
+        std::basic_string<Uint32> m_string; 
+                                  ^
+  
+  Remark: The warnings can be suppressed with "-diag-suppress <warning-number>"
+  
+C:\Users\admin\source\repos\Neural Network\include\SFML/Window/WindowBase.hpp(474): warning #1394-D: field of class type without a DLL interface used in a class with a DLL interface
+        Vector2u          m_size;           
+                          ^
+  
+C:\Users\admin\source\repos\Neural Network\include\SFML/Graphics/Transformable.hpp(319): warning #1394-D: field of class type without a DLL interface used in a class with a DLL interface
+        Vector2f          m_origin;                     
+                          ^
+  
+C:\Users\admin\source\repos\Neural Network\include\SFML/Graphics/Transformable.hpp(320): warning #1394-D: field of class type without a DLL interface used in a class with a DLL interface
+        Vector2f          m_position;                   
+                          ^
+  
+C:\Users\admin\source\repos\Neural Network\include\SFML/Graphics/Transformable.hpp(322): warning #1394-D: field of class type without a DLL interface used in a class with a DLL interface
+        Vector2f          m_scale;                      
+                          ^
+  
+C:\Users\admin\source\repos\Neural Network\include\SFML/Graphics/Vertex.hpp(97): warning #1394-D: field of class type without a DLL interface used in a class with a DLL interface
+        Vector2f  position;  
+                  ^
+  
+C:\Users\admin\source\repos\Neural Network\include\SFML/Graphics/Vertex.hpp(99): warning #1394-D: field of class type without a DLL interface used in a class with a DLL interface
+        Vector2f  texCoords; 
+                  ^
+  
+C:\Users\admin\source\repos\Neural Network\include\SFML/Graphics/VertexArray.hpp(190): warning #1394-D: field of class type without a DLL interface used in a class with a DLL interface
+        std::vector<Vertex> m_vertices;      
+                            ^
+  
+C:\Users\admin\source\repos\Neural Network\include\SFML/Graphics/Shape.hpp(309): warning #1394-D: field of class type without a DLL interface used in a class with a DLL interface
+        IntRect        m_textureRect;      
+                       ^
+  
+C:\Users\admin\source\repos\Neural Network\include\SFML/Graphics/Shape.hpp(315): warning #1394-D: field of class type without a DLL interface used in a class with a DLL interface
+        FloatRect      m_insideBounds;     
+                       ^
+  
+C:\Users\admin\source\repos\Neural Network\include\SFML/Graphics/Shape.hpp(316): warning #1394-D: field of class type without a DLL interface used in a class with a DLL interface
+        FloatRect      m_bounds;           
+                       ^
+  
+C:\Users\admin\source\repos\Neural Network\include\SFML/Graphics/ConvexShape.hpp(115): warning #1394-D: field of class type without a DLL interface used in a class with a DLL interface
+        std::vector<Vector2f> m_points; 
+                              ^
+  
+C:\Users\admin\source\repos\Neural Network\include\SFML/Graphics/Glyph.hpp(57): warning #1394-D: field of class type without a DLL interface used in a class with a DLL interface
+        FloatRect bounds;      
+                  ^
+  
+C:\Users\admin\source\repos\Neural Network\include\SFML/Graphics/Glyph.hpp(58): warning #1394-D: field of class type without a DLL interface used in a class with a DLL interface
+        IntRect   textureRect; 
+                  ^
+  
+C:\Users\admin\source\repos\Neural Network\include\SFML/Graphics/Image.hpp(288): warning #1394-D: field of class type without a DLL interface used in a class with a DLL interface
+        Vector2u           m_size;   
+                           ^
+  
+C:\Users\admin\source\repos\Neural Network\include\SFML/Graphics/Image.hpp(289): warning #1394-D: field of class type without a DLL interface used in a class with a DLL interface
+        std::vector<Uint8> m_pixels; 
+                           ^
+  
+C:\Users\admin\source\repos\Neural Network\include\SFML/Graphics/Texture.hpp(619): warning #1394-D: field of class type without a DLL interface used in a class with a DLL interface
+        Vector2u     m_size;          
+                     ^
+  
+C:\Users\admin\source\repos\Neural Network\include\SFML/Graphics/Texture.hpp(620): warning #1394-D: field of class type without a DLL interface used in a class with a DLL interface
+        Vector2u     m_actualSize;    
+                     ^
+  
+C:\Users\admin\source\repos\Neural Network\include\SFML/Graphics/Font.hpp(411): warning #1394-D: field of class type without a DLL interface used in a class with a DLL interface
+        Info                       m_info;        
+                                   ^
+  
+C:\Users\admin\source\repos\Neural Network\include\SFML/Graphics/Font.hpp(412): warning #1394-D: field of class type without a DLL interface used in a class with a DLL interface
+        mutable PageTable          m_pages;       
+                                   ^
+  
+C:\Users\admin\source\repos\Neural Network\include\SFML/Graphics/Font.hpp(413): warning #1394-D: field of class type without a DLL interface used in a class with a DLL interface
+        mutable std::vector<Uint8> m_pixelBuffer; 
+                                   ^
+  
+C:\Users\admin\source\repos\Neural Network\include\SFML/Graphics/RectangleShape.hpp(102): warning #1394-D: field of class type without a DLL interface used in a class with a DLL interface
+        Vector2f m_size; 
+                 ^
+  
+C:\Users\admin\source\repos\Neural Network\include\SFML/Graphics/View.hpp(272): warning #1394-D: field of class type without a DLL interface used in a class with a DLL interface
+        Vector2f          m_center;              
+                          ^
+  
+C:\Users\admin\source\repos\Neural Network\include\SFML/Graphics/View.hpp(273): warning #1394-D: field of class type without a DLL interface used in a class with a DLL interface
+        Vector2f          m_size;                
+                          ^
+  
+C:\Users\admin\source\repos\Neural Network\include\SFML/Graphics/View.hpp(275): warning #1394-D: field of class type without a DLL interface used in a class with a DLL interface
+        FloatRect         m_viewport;            
+                          ^
+  
+C:\Users\admin\source\repos\Neural Network\include\SFML/Graphics/RenderTarget.hpp(484): warning #1394-D: field of class type without a DLL interface used in a class with a DLL interface
+        StatesCache m_cache;       
+                    ^
+  
+C:\Users\admin\source\repos\Neural Network\include\SFML/Graphics/Shader.hpp(750): warning #1394-D: field of class type without a DLL interface used in a class with a DLL interface
+        TextureTable m_textures;       
+                     ^
+  
+C:\Users\admin\source\repos\Neural Network\include\SFML/Graphics/Shader.hpp(751): warning #1394-D: field of class type without a DLL interface used in a class with a DLL interface
+        UniformTable m_uniforms;       
+                     ^
+  
+C:\Users\admin\source\repos\Neural Network\include\SFML/Graphics/Sprite.hpp(220): warning #1394-D: field of class type without a DLL interface used in a class with a DLL interface
+        IntRect        m_textureRect; 
+                       ^
+  
+C:\Users\admin\source\repos\Neural Network\include\SFML/Graphics/Text.hpp(449): warning #1394-D: field of class type without a DLL interface used in a class with a DLL interface
+        mutable FloatRect   m_bounds;              
+                            ^
+  
+C:\Users\admin\source\repos\Neural Network\include\SFML/System/String.hpp(527): warning #1394-D: field of class type without a DLL interface used in a class with a DLL interface
+        std::basic_string<Uint32> m_string; 
+                                  ^
+  
+  Remark: The warnings can be suppressed with "-diag-suppress <warning-number>"
+  
+C:\Users\admin\source\repos\Neural Network\include\SFML/Window/WindowBase.hpp(474): warning #1394-D: field of class type without a DLL interface used in a class with a DLL interface
+        Vector2u          m_size;           
+                          ^
+  
+C:\Users\admin\source\repos\Neural Network\include\SFML/Graphics/Transformable.hpp(319): warning #1394-D: field of class type without a DLL interface used in a class with a DLL interface
+        Vector2f          m_origin;                     
+                          ^
+  
+C:\Users\admin\source\repos\Neural Network\include\SFML/Graphics/Transformable.hpp(320): warning #1394-D: field of class type without a DLL interface used in a class with a DLL interface
+        Vector2f          m_position;                   
+                          ^
+  
+C:\Users\admin\source\repos\Neural Network\include\SFML/Graphics/Transformable.hpp(322): warning #1394-D: field of class type without a DLL interface used in a class with a DLL interface
+        Vector2f          m_scale;                      
+                          ^
+  
+C:\Users\admin\source\repos\Neural Network\include\SFML/Graphics/Vertex.hpp(97): warning #1394-D: field of class type without a DLL interface used in a class with a DLL interface
+        Vector2f  position;  
+                  ^
+  
+C:\Users\admin\source\repos\Neural Network\include\SFML/Graphics/Vertex.hpp(99): warning #1394-D: field of class type without a DLL interface used in a class with a DLL interface
+        Vector2f  texCoords; 
+                  ^
+  
+C:\Users\admin\source\repos\Neural Network\include\SFML/Graphics/VertexArray.hpp(190): warning #1394-D: field of class type without a DLL interface used in a class with a DLL interface
+        std::vector<Vertex> m_vertices;      
+                            ^
+  
+C:\Users\admin\source\repos\Neural Network\include\SFML/Graphics/Shape.hpp(309): warning #1394-D: field of class type without a DLL interface used in a class with a DLL interface
+        IntRect        m_textureRect;      
+                       ^
+  
+C:\Users\admin\source\repos\Neural Network\include\SFML/Graphics/Shape.hpp(315): warning #1394-D: field of class type without a DLL interface used in a class with a DLL interface
+        FloatRect      m_insideBounds;     
+                       ^
+  
+C:\Users\admin\source\repos\Neural Network\include\SFML/Graphics/Shape.hpp(316): warning #1394-D: field of class type without a DLL interface used in a class with a DLL interface
+        FloatRect      m_bounds;           
+                       ^
+  
+C:\Users\admin\source\repos\Neural Network\include\SFML/Graphics/ConvexShape.hpp(115): warning #1394-D: field of class type without a DLL interface used in a class with a DLL interface
+        std::vector<Vector2f> m_points; 
+                              ^
+  
+C:\Users\admin\source\repos\Neural Network\include\SFML/Graphics/Glyph.hpp(57): warning #1394-D: field of class type without a DLL interface used in a class with a DLL interface
+        FloatRect bounds;      
+                  ^
+  
+C:\Users\admin\source\repos\Neural Network\include\SFML/Graphics/Glyph.hpp(58): warning #1394-D: field of class type without a DLL interface used in a class with a DLL interface
+        IntRect   textureRect; 
+                  ^
+  
+C:\Users\admin\source\repos\Neural Network\include\SFML/Graphics/Image.hpp(288): warning #1394-D: field of class type without a DLL interface used in a class with a DLL interface
+        Vector2u           m_size;   
+                           ^
+  
+C:\Users\admin\source\repos\Neural Network\include\SFML/Graphics/Image.hpp(289): warning #1394-D: field of class type without a DLL interface used in a class with a DLL interface
+        std::vector<Uint8> m_pixels; 
+                           ^
+  
+C:\Users\admin\source\repos\Neural Network\include\SFML/Graphics/Texture.hpp(619): warning #1394-D: field of class type without a DLL interface used in a class with a DLL interface
+        Vector2u     m_size;          
+                     ^
+  
+C:\Users\admin\source\repos\Neural Network\include\SFML/Graphics/Texture.hpp(620): warning #1394-D: field of class type without a DLL interface used in a class with a DLL interface
+        Vector2u     m_actualSize;    
+                     ^
+  
+C:\Users\admin\source\repos\Neural Network\include\SFML/Graphics/Font.hpp(411): warning #1394-D: field of class type without a DLL interface used in a class with a DLL interface
+        Info                       m_info;        
+                                   ^
+  
+C:\Users\admin\source\repos\Neural Network\include\SFML/Graphics/Font.hpp(412): warning #1394-D: field of class type without a DLL interface used in a class with a DLL interface
+        mutable PageTable          m_pages;       
+                                   ^
+  
+C:\Users\admin\source\repos\Neural Network\include\SFML/Graphics/Font.hpp(413): warning #1394-D: field of class type without a DLL interface used in a class with a DLL interface
+        mutable std::vector<Uint8> m_pixelBuffer; 
+                                   ^
+  
+C:\Users\admin\source\repos\Neural Network\include\SFML/Graphics/RectangleShape.hpp(102): warning #1394-D: field of class type without a DLL interface used in a class with a DLL interface
+        Vector2f m_size; 
+                 ^
+  
+C:\Users\admin\source\repos\Neural Network\include\SFML/Graphics/View.hpp(272): warning #1394-D: field of class type without a DLL interface used in a class with a DLL interface
+        Vector2f          m_center;              
+                          ^
+  
+C:\Users\admin\source\repos\Neural Network\include\SFML/Graphics/View.hpp(273): warning #1394-D: field of class type without a DLL interface used in a class with a DLL interface
+        Vector2f          m_size;                
+                          ^
+  
+C:\Users\admin\source\repos\Neural Network\include\SFML/Graphics/View.hpp(275): warning #1394-D: field of class type without a DLL interface used in a class with a DLL interface
+        FloatRect         m_viewport;            
+                          ^
+  
+C:\Users\admin\source\repos\Neural Network\include\SFML/Graphics/RenderTarget.hpp(484): warning #1394-D: field of class type without a DLL interface used in a class with a DLL interface
+        StatesCache m_cache;       
+                    ^
+  
+C:\Users\admin\source\repos\Neural Network\include\SFML/Graphics/Shader.hpp(750): warning #1394-D: field of class type without a DLL interface used in a class with a DLL interface
+        TextureTable m_textures;       
+                     ^
+  
+C:\Users\admin\source\repos\Neural Network\include\SFML/Graphics/Shader.hpp(751): warning #1394-D: field of class type without a DLL interface used in a class with a DLL interface
+        UniformTable m_uniforms;       
+                     ^
+  
+C:\Users\admin\source\repos\Neural Network\include\SFML/Graphics/Sprite.hpp(220): warning #1394-D: field of class type without a DLL interface used in a class with a DLL interface
+        IntRect        m_textureRect; 
+                       ^
+  
+C:\Users\admin\source\repos\Neural Network\include\SFML/Graphics/Text.hpp(449): warning #1394-D: field of class type without a DLL interface used in a class with a DLL interface
+        mutable FloatRect   m_bounds;              
+                            ^
+  
+CUDACOMPILE : nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+  main.cu
+  tmpxft_000022a4_00000000-7_main.cudafe1.cpp
+C:\Users\admin\source\repos\Neural Network\NeuralNetSFML\main.cu(192): warning C4244: 'initializing': conversion from 'unsigned __int64' to 'float', possible loss of data
+C:\Users\admin\source\repos\Neural Network\NeuralNetSFML\main.cu(194): warning C4244: 'initializing': conversion from '_Ty' to 'float', possible loss of data
+          with
+          [
+              _Ty=unsigned int
+          ]
+  NeuralNetSFML.vcxproj -> C:\Users\admin\source\repos\Neural Network\x64\Debug\NeuralNetSFML.exe

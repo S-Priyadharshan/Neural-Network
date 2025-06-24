@@ -1,0 +1,10 @@
+﻿  NeuralNetCPU.cpp
+C:\Users\admin\source\repos\Neural Network\NeuralNetCPU\NeuralNetCPU.cpp(58,23): warning C4267: 'return': conversion from 'size_t' to 'unsigned int', possible loss of data
+C:\Users\admin\source\repos\Neural Network\NeuralNetCPU\NeuralNetCPU.cpp(73,30): warning C4267: 'return': conversion from 'size_t' to 'unsigned int', possible loss of data
+C:\Users\admin\source\repos\Neural Network\NeuralNetCPU\NeuralNetCPU.cpp(114,19): warning C4018: '<': signed/unsigned mismatch
+C:\Users\admin\source\repos\Neural Network\NeuralNetCPU\NeuralNetCPU.cpp(200,21): warning C4267: 'initializing': conversion from 'size_t' to 'unsigned int', possible loss of data
+C:\Users\admin\source\repos\Neural Network\NeuralNetCPU\NeuralNetCPU.cpp(201,19): warning C4018: '<': signed/unsigned mismatch
+C:\Users\admin\source\repos\Neural Network\NeuralNetCPU\NeuralNetCPU.cpp(205,20): warning C4018: '<=': signed/unsigned mismatch
+C:\Users\admin\source\repos\Neural Network\NeuralNetCPU\NeuralNetCPU.cpp(254,13): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\admin\source\repos\Neural Network\NeuralNetCPU\NeuralNetCPU.cpp(266,13): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+  NeuralNetCPU.vcxproj -> C:\Users\admin\source\repos\Neural Network\x64\Debug\NeuralNetCPU.exe

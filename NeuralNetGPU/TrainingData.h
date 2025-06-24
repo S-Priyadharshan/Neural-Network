@@ -14,3 +14,5 @@ struct TrainingData {
 	bool getTargetOutputs(vector<float>& targetVals);
 	void reset();
 };
+
+
