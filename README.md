@@ -1,4 +1,4 @@
-# Custom Implementation of Artificial Neural Network ( C++ | CUDA | SFML )
+# Custom Implementation of Artificial Neural Network  ( C++ | CUDA | SFML )
 
 Hey There!
 
@@ -19,11 +19,9 @@ The code is modularized into the following:
 
 ## Index
 
-1. CPU Neural Network
-
-2. CUDA Neural Network
-
-3. SFML Visualizer
+1. [CPU Neural Network](#1-neuralnetcpu)  
+2. [CUDA Neural Network](#2-neuralnetgpu)  
+3. [SFML Visualizer](#3-neuralnetsfml)
 
 ## 1. NeuralNetCPU
 
@@ -88,7 +86,7 @@ private:
 ```
 ---
 
-## NeuralNetGPU
+## 2. NeuralNetGPU
 
 This project significantly enhances the neural network's performance by offloading computationally intensive tasks to the GPU using NVIDIA's CUDA platform.
 The GPU version accelerates forward and backward propagation using CUDA kernels and all major operations like dot product and gradient updates are done on the GPU.
@@ -148,7 +146,7 @@ __global__ void feedForwardKernel(
 
 ---
 
-## NeuralNetSFML
+## 3. NeuralNetSFML
 
 Perhaps the most interesting part of my nerual network implementation was learning how to implement SFML graphic libraries into helping visualize Neural Networks and understand how they mirror the human brain and actually learn stuff.
 
@@ -234,6 +232,7 @@ These resources were absolutely crucial in helping me making this project so ple
 Neural Net:
 
 https://www.youtube.com/watch?v=sK9AbJ4P8ao
+
 https://millermattson.com/dave/?p=54
 
 SFML Integration:
