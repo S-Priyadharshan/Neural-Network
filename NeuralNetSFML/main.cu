@@ -1,238 +1,150 @@
-#include<iostream>
-#include"SFML_includes.cuh"
-#include"TrainingData.h"
+﻿#include<iostream>
 #include <cuda_runtime.h>
 #include <device_launch_parameters.h>
 #include "device_atomic_functions.h"
 #include <random>
+#include <chrono>
+
+#include"SFML_includes.cuh"
+#include"TrainingData.h"
+#include "Fnn.cuh";
+#include "drawImageMap.cuh";
+
 using namespace std;
 
-__device__ float activationFunction(float x) {
-	return 1.0f / (1.0f + expf(-x));
+template<typename T>
+
+T clamp(T val, T low, T high) {
+	return std::max(low, std::min(val, high));
 }
 
-__global__ void feedForwardKernel(
-	const float* inputs,
-	const float* weights,
-	const float* bias,
-	float* outputs,
-	int numInputs
-)
-{
-	extern __shared__ float cache[];
-
-	int Nid = blockIdx.x;
-	int tid = threadIdx.x;
-
-	float product = 0.0f;
-
-	if (tid < numInputs) {
-		product = inputs[tid] * weights[Nid * numInputs + tid];
-	}
-
-	cache[tid] = product;
-	__syncthreads();
-
-	for (int s = blockDim.x / 2;s > 0;s >>= 1) {
-		if (tid < s && (tid + s) < numInputs) {
-			cache[tid] += cache[tid + s];
-		}
-		__syncthreads();
-	}
-
-	if (tid == 0) {
-		float sum = cache[0] + bias[Nid];
-		outputs[Nid] = activationFunction(sum);
-	}
-}
-
-struct Layer {
-	int numInputs;
-	int numNeurons;
-	vector<float>weights;
-	vector<float>bias;
-	vector<float>output;
-
-	float* d_weights = nullptr;
-	float* d_bias = nullptr;
-	float* d_output = nullptr;
-
-	void Initialize(int inputSize, int neuronCount);
-	void feedForward(float* d_input);
-	void allocateOnDevice();
-	void freeDeviceMem();
-};
-
-float randWeight(void) { return static_cast<float>(rand()) / RAND_MAX; }
-
-
-void Layer::Initialize(int inputSize, int neuronCount) {
-	numInputs = inputSize;
-	numNeurons = neuronCount;
-
-	weights.resize(numInputs * numNeurons);
-	bias.resize(numNeurons);
-	output.resize(numNeurons);
-
-	for (int n = 0;n < numNeurons;n++) {
-		for (int i = 0;i < numInputs;i++) {
-			weights[n * numInputs + i] = randWeight();
-		}
-		bias[n] = randWeight();
-		output[n] = 0.0f;
-	}
-}
-
-void Layer::allocateOnDevice() {
-	HANDLE_ERROR(cudaMalloc(&d_weights, sizeof(float) * weights.size()));
-	HANDLE_ERROR(cudaMalloc(&d_bias, sizeof(float) * bias.size()));
-	HANDLE_ERROR(cudaMalloc(&d_output, sizeof(float) * output.size()));
-
-	HANDLE_ERROR(cudaMemcpy(d_weights, weights.data(), sizeof(float) * weights.size(), cudaMemcpyHostToDevice));
-	HANDLE_ERROR(cudaMemcpy(d_bias, bias.data(), sizeof(float) * bias.size(), cudaMemcpyHostToDevice));
-}
-
-void Layer::freeDeviceMem() {
-	HANDLE_ERROR(cudaFree(d_weights));
-	HANDLE_ERROR(cudaFree(d_bias));
-	HANDLE_ERROR(cudaFree(d_output));
-}
-
-void Layer::feedForward(float* d_input) {
-	int blockSize = numInputs;
-	feedForwardKernel << <numNeurons, blockSize, blockSize * sizeof(float) >> > (d_input, d_weights, d_bias, d_output, numInputs);
-}
-
-struct Net {
-	vector<Layer> layers;
-
-	void Initialize(vector<unsigned>& topology);
-	vector<float> feedForward(vector<float>& inputVals);
-	vector<vector<float>> getAllWeights() const;
-	vector<vector<float>> getAllBiases() const;
-	vector<vector<float>> getAllActivations() const;
-
-};
-
-void Net::Initialize(vector<unsigned>& topology) {
-	layers.clear();
-
-	for (int i = 0;i < topology.size() - 1;i++) {
-		Layer layer;
-		layer.Initialize(topology[i], topology[i + 1]);
-		layers.push_back(layer);
-	}
-}
-
-vector<vector<float>> Net::getAllWeights() const{
-	vector<vector<float>>allWeights;
-	
-	for (const auto& layer : layers) {
-		allWeights.push_back(layer.weights);
-	}
-
-	return allWeights;
-}
-
-vector<vector<float>> Net::getAllBiases() const {
-	vector<vector<float>> allBiases;
-	for (const auto& layer : layers) {
-		allBiases.push_back(layer.bias);
-	}
-	return allBiases;
-}
-
-vector<vector<float>> Net::getAllActivations() const {
-	vector<vector<float>> allActivations;
-	for (const auto& layer : layers) {
-		allActivations.push_back(layer.output);
-	}
-	return allActivations;
-}
+const std::chrono::microseconds FRAME_DURATION(100000);
 
 int main() {
-	TrainingData data("trainingData.txt");
+    TrainingData data("trainingData.txt");
+    vector<unsigned> topology;
+    data.getTopology(topology);
 
-	vector<unsigned>topology;
-	data.getTopology(topology);
+    Net net;
+    net.Initialize(topology);
+    net.allocateBuffers(topology[0], topology.back());
+    for (Layer& layer : net.layers) {
+        layer.allocateOnDevice();
+    }
 
-	Net net;
-	net.Initialize(topology);
+    vector<float> inputVals, outputVals;
+    vector<sf::Vector2f> inputs;
+    vector<sf::Color> colors;
+    bool train = false;
 
-	for (Layer& layer : net.layers) {
-		layer.allocateOnDevice();
-	}
+    float* d_input = nullptr;
+    float* d_targetVals = nullptr;
+    HANDLE_ERROR(cudaMalloc(&d_input, sizeof(float) * 2));
+    HANDLE_ERROR(cudaMalloc(&d_targetVals, sizeof(float) * 3));
 
-	cout << "Network initialized with " << topology.size() << " layers." << endl;
+    sf::RenderWindow window(sf::VideoMode(2 * 800, 600), "Neural Net");
+    window.setFramerateLimit(60);
 
-	vector<float>inputVals, outputVals;
+    sf::Font font;
+    if (!font.loadFromFile("Monospace.ttf")) {
+        std::cerr << "Font load failed\n";
+        return -1;
+    }
 
-	if (!data.getNextInputs(inputVals)) {
-		cerr << "Failed to read training data" << endl;
-		return 1;
-	}
+    int SCREEN_WIDTH = 800;
+    int SCREEN_HEIGHT = 600;
 
-	float* d_input = nullptr;
-	HANDLE_ERROR(cudaMalloc(&d_input, sizeof(float) * inputVals.size()));
+    vector<vector<sf::Vector2f>> positions(topology.size());
+    for (unsigned int i = 0; i < topology.size(); i++) {
+        float x = (SCREEN_WIDTH / (topology.size() + 1)) * (i + 1);
+        for (unsigned int j = 0; j < topology[i]; j++) {
+            float y = (SCREEN_HEIGHT / (topology[i] + 1)) * (j + 1);
+            positions[i].emplace_back(x, y);
+        }
+    }
 
-	sf::RenderWindow window(sf::VideoMode(800, 600), "Neural Network");
-	window.setFramerateLimit(60);
+    std::chrono::steady_clock::time_point previous_time = std::chrono::steady_clock::now();
+    std::chrono::microseconds lag(0);
 
-	sf::Font font;
-	if (!font.loadFromFile("Monospace.ttf")) {
-		std::cerr << "Font load failed\n";
-		return -1;
-	}
+    while (window.isOpen()) {
+        auto current_time = std::chrono::steady_clock::now();
+        auto elapsed = std::chrono::duration_cast<std::chrono::microseconds>(current_time - previous_time);
+        previous_time = current_time;
+        lag += elapsed;
 
-	int SCREEN_WIDTH = 800;
-	int SCREEN_HEIGHT = 600;
+        sf::Event event;
+        while (window.pollEvent(event)) {
+            if (event.type == sf::Event::Closed) {
+                window.close();
+            }
+            else if (event.type == sf::Event::KeyReleased && event.key.code == sf::Keyboard::Enter) {
+                train = true;
+            }
+            else if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left) {
+                int mx = event.mouseButton.x, my = event.mouseButton.y;
+                if (mx >= SCREEN_WIDTH && mx < 2 * SCREEN_WIDTH && my >= 0 && my < SCREEN_HEIGHT) {
+                    float dot_x = (mx - SCREEN_WIDTH) / static_cast<float>(SCREEN_WIDTH);
+                    float dot_y = my / static_cast<float>(SCREEN_HEIGHT);
+                    sf::Color color;
+                    vector<float> label;
+                    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q)) {
+                        color = sf::Color::Red; label = { 1, 0, 0 };
+                    }
+                    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
+                        color = sf::Color::Green; label = { 0, 1, 0 };
+                    }
+                    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::E)) {
+                        color = sf::Color::Blue; label = { 0, 0, 1 };
+                    }
+                    else break;
+                    inputs.emplace_back(dot_x, dot_y);
+                    colors.emplace_back(color);
+                }
+            }
+        }
 
-	vector<vector<sf::Vector2f>> positions(topology.size());
-	for (unsigned int i = 0; i < topology.size(); i++) {
-		float x = (SCREEN_WIDTH/ (topology.size() + 1)) * (i + 1);
-		for (unsigned int j = 0; j < topology[i]; j++) {
-			float y = (SCREEN_HEIGHT / (topology[i] + 1)) * (j + 1);
-			positions[i].emplace_back(x, y);
-		}
-	}
+        while (lag >= FRAME_DURATION) {
+            lag -= FRAME_DURATION;
+            if (train && !inputs.empty() && inputs.size() == colors.size()){
+                for (int i = 0; i < 50; ++i) {
+                    int idx = rand() % inputs.size();
+                    inputVals = { inputs[idx].x, inputs[idx].y };
+                    sf::Color c = colors[idx];
+                    outputVals = {
+                        c == sf::Color::Red ? 1.0f : 0.0f,
+                        c == sf::Color::Green ? 1.0f : 0.0f,
+                        c == sf::Color::Blue ? 1.0f : 0.0f
+                    };
+                    HANDLE_ERROR(cudaMemcpy(d_input, inputVals.data(), sizeof(float) * 2, cudaMemcpyHostToDevice));
+                    HANDLE_ERROR(cudaMemcpy(d_targetVals, outputVals.data(), sizeof(float) * 3, cudaMemcpyHostToDevice));
+                    net.feedForward(d_input);
+                    net.backPropagate(d_input, d_targetVals);
+                }
 
-	for (int epoch = 0;epoch < 20;epoch++) {
-		cout << "Epoch: " << epoch << "\n";
+                for (auto& layer : net.layers) {
+                    HANDLE_ERROR(cudaMemcpy(layer.output.data(), layer.d_output, sizeof(float) * layer.output.size(), cudaMemcpyDeviceToHost));
+                }
+            }
+        }
 
-		HANDLE_ERROR(cudaMemcpy(d_input, inputVals.data(), sizeof(float) * inputVals.size(), cudaMemcpyHostToDevice));
+        window.clear();
+        if (inputVals.size() != topology[0]) {
+            inputVals.assign(topology[0], 0.0f);
+        }
+        drawNeuralNet(window, font, positions, topology, net.getAllActivations(), inputVals);
+    
+        drawImageMap(inputs, colors, window, net,d_input);
 
-		float* currInput = d_input;
+        window.display();
+    }
 
-		for (int l = 0;l < net.layers.size();l++) {
-			Layer& layer = net.layers[l];
-			layer.feedForward(currInput);
-
-			HANDLE_ERROR(cudaMemcpy(layer.output.data(), layer.d_output, sizeof(float) * layer.output.size(), cudaMemcpyDeviceToHost));
-
-			currInput = layer.d_output;
-
-		}
-
-		auto activations = net.getAllActivations();
-
-		sf::Event e;
-		while (window.pollEvent(e)) {
-			if (e.type == sf::Event::Closed)window.close();
-			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))window.close();
-		}
-
-		/*vector<vector<float>> allWeights = net.getAllWeights();
-		vector<vector<float>> allBiases = net.getAllBiases();
-		vector<vector<float>> allActivations = net.getAllActivations();*/
-		//drawNeuralNet(topology, allWeights, allBiases, allActivations);
-		drawNeuralNet(window, font, positions, topology, activations);
-		sf::sleep(sf::milliseconds(500));
-	}
-
-	for (Layer& layer : net.layers) {
-		layer.freeDeviceMem();
-	}
-	cudaFree(d_input);
-	return 0;
-
+    for (Layer& layer : net.layers) layer.freeDeviceMem();
+    cudaFree(d_input);
+    cudaFree(d_targetVals);
+    return 0;
 }
+
+
+
+
+

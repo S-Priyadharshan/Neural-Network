@@ -36,11 +36,13 @@ bool TrainingData::getNextInputs(vector<float>& inputVals) {
 	string line, label;
 	if (!getline(file, line)) return false; 
 	if (line.empty()) return false;
-
 	istringstream ss(line);
 	ss >> label;
-	if (label != "in:") return false;
-
+	if (label == "in:") {
+		double oneValue;
+		while (ss >> oneValue)
+			inputVals.push_back(oneValue);
+	}
 	float val;
 	while (ss >> val) inputVals.push_back(val);
 	return true;
@@ -54,7 +56,11 @@ bool TrainingData::getTargetOutputs(vector<float>& targetVals) {
 
 	istringstream ss(line);
 	ss >> label;
-	if (label != "out:") return false;
+	if (label == "out:") {
+		double oneValue;
+		while (ss >> oneValue)
+			targetVals.push_back(oneValue);
+	}
 
 	float val;
 	while (ss >> val) targetVals.push_back(val);

@@ -16,5 +16,4 @@ inline void HandleError(cudaError_t err, const char* file, int line) {
     }
 }
 
-//void drawNeuralNet(std::vector<unsigned>&topology,std::vector<std::vector<float>>&weights, std::vector<std::vector<float>>&biases,std::vector<std::vector<float>>& activations);
-void drawNeuralNet(sf::RenderWindow& window, sf::Font& font, vector<vector<sf::Vector2f>>&positions, vector<unsigned>& topology, vector<vector<float>>& activations);
+void drawNeuralNet(sf::RenderWindow& window, sf::Font& font, vector<vector<sf::Vector2f>>&positions, vector<unsigned>& topology, vector<vector<float>>& activations,vector<float>&inputVals);

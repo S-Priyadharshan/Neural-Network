@@ -11,10 +11,12 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <CudaCompile Include="Fnn.cu" />
     <CudaCompile Include="main.cu" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cuda_utils.cuh" />
+    <ClInclude Include="Fnn.cuh" />
     <ClInclude Include="TrainingData.h" />
   </ItemGroup>
   <ItemGroup>

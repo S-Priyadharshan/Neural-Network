@@ -2,16 +2,10 @@
   
   C:\Users\admin\source\repos\Neural Network\NeuralNetGPU>"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.8\bin\nvcc.exe" -gencode=arch=compute_52,code=\"sm_52,compute_52\" --use-local-env -ccbin "C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.43.34808\bin\HostX64\x64" -x cu   -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.8\include" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.8\include"  -G   --keep-dir x64\Debug  -maxrregcount=0    --machine 64 --compile -cudart static  -g  -DWIN32 -DWIN64 -D_DEBUG -D_CONSOLE -D_MBCS -Xcompiler "/EHsc /W3 /nologo /Od /FS /Zi /RTC1 /MDd " -Xcompiler "/Fdx64\Debug\vc143.pdb" -o "C:\Users\admin\source\repos\Neural Network\NeuralNetGPU\x64\Debug\main.cu.obj" "C:\Users\admin\source\repos\Neural Network\NeuralNetGPU\main.cu" 
 C:\Users\admin\source\repos\Neural Network\NeuralNetGPU\main.cu(9): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+C:\Users\admin\source\repos\Neural Network\NeuralNetGPU\main.cu(10): warning C4067: unexpected tokens following preprocessor directive - expected a newline
 C:\Users\admin\source\repos\Neural Network\NeuralNetGPU\main.cu(9): warning C4067: unexpected tokens following preprocessor directive - expected a newline
-C:\Users\admin\source\repos\Neural Network\NeuralNetGPU\main.cu(63): warning #177-D: variable "error" was declared but never referenced
-    	float error = 0.0;
-    	      ^
-  
-  Remark: The warnings can be suppressed with "-diag-suppress <warning-number>"
-  
+C:\Users\admin\source\repos\Neural Network\NeuralNetGPU\main.cu(10): warning C4067: unexpected tokens following preprocessor directive - expected a newline
 CUDACOMPILE : nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
   main.cu
-  tmpxft_0000a178_00000000-7_main.cudafe1.cpp
-C:\Users\admin\source\repos\Neural Network\NeuralNetGPU\main.cu(390): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-C:\Users\admin\source\repos\Neural Network\NeuralNetGPU\main.cu(405): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+  tmpxft_000046fc_00000000-7_main.cudafe1.cpp
   NeuralNetGPU.vcxproj -> C:\Users\admin\source\repos\Neural Network\x64\Debug\NeuralNetGPU.exe

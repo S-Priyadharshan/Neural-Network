@@ -119,14 +119,6 @@ Neuron::Neuron(unsigned numOutputs, unsigned Index) {
 	n_Index = Index;
 }
 
-//double Neuron::transferFunction(double x) {
-//	return x > 0.0 ? x : 0.0;
-//}
-//
-//double Neuron::transferFunctionDerivative(double x) {
-//	return x > 0.0 ? 1.0 : 0.0;
-//}
-
 double Neuron::transferFunction(double x) {
 	return 1.0 / (1.0 + exp(-x)); // Sigmoid
 }
@@ -176,6 +168,7 @@ void Neuron::calcHiddenGradient(const Layer& nextLayer) {
 	double gow = sumDow(nextLayer);
 	gradient = gow * transferFunctionDerivative(outputVal);
 }
+
 //````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````
 
 class Net {
@@ -220,9 +213,7 @@ void Net::feedForward(const vector<double>& inputVals) {
 
 	for (unsigned i = 1;i < layers.size();i++) {
 		Layer& prevLayer = layers[i - 1]; // setting a "reference" to prev layer
-		/*for (unsigned n = 0;n < layers[i].size();n++) {
-			layers[i][n].feedForward(prevLayer);
-		}*/
+		
 		for (unsigned n = 0;n < layers[i].size()-1;n++) {
 			layers[i][n].feedForward(prevLayer);
 		}
@@ -366,5 +357,9 @@ int main() {
 	}
 
 	cout << "Done" << endl;
+
+	// Thanks for reading through the comments
+	// A Neural net implementation can be complex 
+	// But its intuitive once you figure out the maths
 }
 

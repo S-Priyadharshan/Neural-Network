@@ -34,10 +34,13 @@ void TrainingData::getTopology(vector<unsigned>& topology) {
 bool TrainingData::getNextInputs(vector<float>& inputVals) {
 	inputVals.clear();
 	string line, label;
-	getline(file, line);
+	if (!getline(file, line)) return false;
+	if (line.empty()) return false;
+
 	istringstream ss(line);
 	ss >> label;
 	if (label != "in:") return false;
+
 	float val;
 	while (ss >> val) inputVals.push_back(val);
 	return true;
@@ -46,12 +49,15 @@ bool TrainingData::getNextInputs(vector<float>& inputVals) {
 bool TrainingData::getTargetOutputs(vector<float>& targetVals) {
 	targetVals.clear();
 	string line, label;
-	getline(file, line);
+	if (!getline(file, line)) return false;
+	if (line.empty()) return false;
+
 	istringstream ss(line);
 	ss >> label;
-	if (label != "out:")return false;
+	if (label != "out:") return false;
+
 	float val;
-	while (ss >> val)targetVals.push_back(val);
+	while (ss >> val) targetVals.push_back(val);
 	return true;
 }
 
@@ -59,3 +65,4 @@ void TrainingData::reset() {
 	file.clear();
 	file.seekg(0, ios::beg);
 }
+
