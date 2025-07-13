@@ -238,6 +238,7 @@ https://millermattson.com/dave/?p=54
 SFML Integration:
 
 https://www.youtube.com/watch?v=Zrrnqd0rCXg
+
 https://github.com/Kofybrek/Neural-network/tree/Main
 
 Thank you so much for going through the repo and hit me up if you want to collaborate on more interesting projects like these.
