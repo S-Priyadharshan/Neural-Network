@@ -1,26 +1,34 @@
-# Custom Neural Network Implementations (C++ & CUDA)
+# Custom Implementation of Artificial Neural Network ( C++ | CUDA | SFML )
 
-This repository contains custom implementations of a neural network, showcasing different approaches to achieve varying levels of performance and functionality. The project is divided into three distinct sub-projects:
+Hey There!
+
+## Abstract
+
+This repository contains my project which implements a fully functional Feedforward Neural Network with both CPU and CUDA-accelerated GPU backend, coupled with an SFML based Real-time visualizer.
+It provides an interactive and intuitive approach to understanding how Neural Networks work on a fundamental level and implements many of its core concepts from scratch.
+
+The code is modularized into the following:
 
 * **NeuralNetCPU**: A foundational implementation of a neural network in pure C++.
+
 * **NeuralNetGPU**: An optimized version leveraging CUDA for GPU acceleration.
+  
 * **NeuralNetSFML**: An enhanced version that combines CUDA optimization with SFML for real-time visual representation of the neural network's behavior.
 
 ---
 
-## Project Structure
+## Index
 
-The repository is organized into three main project directories, each focusing on a specific implementation:
+1. CPU Neural Network
 
-* `NeuralNetCPU/`: Contains the C++ CPU-based neural network.
-* `NeuralNetGPU/`: Houses the CUDA-optimized neural network.
-* `NeuralNetSFML/`: Will contain the CUDA-optimized neural network with SFML visualization.
+2. CUDA Neural Network
 
----
+3. SFML Visualizer
 
-## NeuralNetCPU
+## 1. NeuralNetCPU
 
-This project provides a basic, object-oriented implementation of a feedforward neural network using standard C++. It's designed for clarity and understanding the fundamental concepts of neural network architecture, forward propagation, and backpropagation.
+The CPU implementation builds a fully-connected feedforward neural net using classes like Net, Layer and Neuron.
+It implements all the features from scratch and handles all the required low level mathematical operations.
 
 ### Features
 
@@ -29,39 +37,61 @@ This project provides a basic, object-oriented implementation of a feedforward n
 * **Sigmoid Activation**: Uses the sigmoid function for neuron activation.
 * **Mean Squared Error**: Calculates error using the root mean square.
 * **Training Data Handling**: Reads network topology and training data from a text file.
+* **Object Oriented Design**: The network is modularized into components appropriate to OOPs design principles
 
-### Building and Running
+### Examples
 
-1.  Navigate to the `NeuralNetCPU/` directory.
-2.  Compile the source code using a C++ compiler (e.g., g++):
-    ```bash
-    g++ -o NeuralNetCPU main.cpp -std=c++11
-    ```
-3.  Run the executable:
-    ```bash
-    ./NeuralNetCPU
-    ```
-    Make sure `trainingData.txt` is present in the same directory as the executable.
+This is a successful example of teaching the model how an XOR operations works and allowing it to identify the non-linear relationship between the input and output variables
 
-### Example `trainingData.txt` format:
+<img width="618" height="515" alt="image" src="https://github.com/user-attachments/assets/3ca08103-484d-453c-806f-5dc8312c3f66" />
 
+Structure Code Snippet:
+
+```c++
+class Neuron {
+public:
+	Neuron(unsigned numOutputs, unsigned Index); // here num outputs is like the amount of neurons in the next layer
+	void setOutputVal(double val) { outputVal = val; }
+	double getOutputVal() const { return outputVal; }
+	void feedForward(const Layer& prevLayer);
+	void calcOutputGradients(double targetVal);
+	void calcHiddenGradient(const Layer& nextLayer);
+	void updateInputWeights(Layer& prevLayer);
+
+private:
+	double outputVal;
+	unsigned n_Index;
+	static double randWeight(void) { return static_cast<double>(rand()) / RAND_MAX; }
+	vector<Connection> outputWeights;
+	double sumDow(const Layer& nextLayer);
+	static double transferFunction(double x);
+	static double transferFunctionDerivative(double x);
+	double gradient;
+	static double eta;
+	static double alpha;
+};
+
+class Net {
+public:
+	Net(const vector<unsigned>& topology);//constructor
+	void feedForward(const vector<double>& inputVals);
+	void backProp(const vector<double>& targetVals);
+	void getResults(vector<double>& resultVals)const;
+	double getRecentAverageError(void)const { return avgError; }
+
+private:
+	vector<Layer> layers; // this is vector<vector<Neuron>> layers
+	double error;         // basically layout of the whole network
+	double avgError;
+	static double avgErrorSmoothingFactor;
+};
 ```
-topology: 2 2 1
-in: 0.0 0.0
-out: 0.0
-in: 0.0 1.0
-out: 1.0
-in: 1.0 0.0
-out: 1.0
-in: 1.0 1.0
-out: 0.0
-```
-
 ---
 
 ## NeuralNetGPU
 
-This project significantly enhances the neural network's performance by offloading computationally intensive tasks to the GPU using NVIDIA's CUDA platform. This version focuses on demonstrating the speedup achievable through parallel processing.
+This project significantly enhances the neural network's performance by offloading computationally intensive tasks to the GPU using NVIDIA's CUDA platform.
+The GPU version accelerates forward and backward propagation using CUDA kernels and all major operations like dot product and gradient updates are done on the GPU.
 
 ### Features
 
@@ -69,41 +99,94 @@ This project significantly enhances the neural network's performance by offloadi
 * **Custom Kernels**: Implements custom CUDA kernels for efficient feedforward operations.
 * **Device Memory Management**: Handles memory allocation and transfer between host (CPU) and device (GPU).
 
-### Building and Running
+### Example
 
-1.  Ensure you have the NVIDIA CUDA Toolkit installed and configured.
-2.  Navigate to the `NeuralNetGPU/` directory.
-3.  Compile the CUDA code using `nvcc` (NVIDIA CUDA Compiler):
-    ```bash
-    nvcc -o NeuralNetGPU main.cu TrainingData.cpp -std=c++11 -lcudart
-    ```
-    (Note: You might need to adjust the compilation command based on your specific CUDA setup and if `TrainingData.h` or `cuda_utils.cuh` require separate compilation or linking.)
-4.  Run the executable:
-    ```bash
-    ./NeuralNetGPU
-    ```
-    Ensure `trainingData.txt` is available for the network to initialize.
+The same test run on a CUDA accelerated Neural network.
+
+<img width="299" height="436" alt="image" src="https://github.com/user-attachments/assets/3db39394-77a0-43eb-8f87-2d0229b303e7" />
+
+The performance hit is due to the data transfer between the CPU and GPU and it is optimized to work better with larger datasets and more intensive machine learning processes.
+
+Code Snippet:
+
+```c++
+__global__ void feedForwardKernel(
+	const float* inputs,
+	const float* weights,
+	const float* bias,
+	float* outputs,
+	int numInputs
+)
+{
+	extern __shared__ float cache[];
+
+	int Nid = blockIdx.x;
+	int tid = threadIdx.x;
+
+	float product = 0.0f;
+
+	if (tid < numInputs) {
+		product = inputs[tid] * weights[Nid * numInputs + tid];
+	}
+
+	cache[tid] = product;
+	__syncthreads();
+
+	for (int s = blockDim.x / 2;s > 0;s >>= 1) {
+		if (tid < s && (tid + s) < numInputs) {
+			cache[tid] += cache[tid + s];
+		}
+		__syncthreads();
+	}
+
+	if (tid == 0) {
+		float sum = cache[0] + bias[Nid];
+		outputs[Nid] = activationFunction(sum);
+	}
+}
+```
 
 ---
 
 ## NeuralNetSFML
 
-This project extends the `NeuralNetGPU` implementation by integrating the Simple and Fast Multimedia Library (SFML) to provide a visual representation of the neural network. This allows for a dynamic and intuitive understanding of how the network processes data and learns.
+Perhaps the most interesting part of my nerual network implementation was learning how to implement SFML graphic libraries into helping visualize Neural Networks and understand how they mirror the human brain and actually learn stuff.
 
 ### Features
 
 * **Real-time Visualization**: Displays the network's structure, activation levels, and potentially training progress.
 * **SFML Graphics**: Leverages SFML for rendering the visual interface.
 * **CUDA Integration**: Maintains the performance benefits of GPU acceleration.
+* **Interactive**: Place RGB points along the screen and watch the model learn to differentiate them.
 
-### Building and Running
+### Example
 
-(Details for building and running the `NeuralNetSFML` project will be added once its development is complete.)
+This is how the neural network is presented in its training stage
+
+<img width="792" height="595" alt="image" src="https://github.com/user-attachments/assets/5e99e345-75d0-443e-abae-e687247dccdd" />
+
+and this is an example of it learning 
+
+<img width="1598" height="639" alt="image" src="https://github.com/user-attachments/assets/5bf0efde-6907-40d1-bfc2-4c277b39c111" />
+
+<img width="1594" height="635" alt="image" src="https://github.com/user-attachments/assets/71f757e7-17f5-4f33-9eea-477e72d8fd49" />
+
+<img width="1600" height="631" alt="image" src="https://github.com/user-attachments/assets/6fd21eff-2763-4257-aa81-fb0c7b263bad" />
 
 ---
 
-## Contribution
+## References
 
-Feel free to explore the code, open issues, or submit pull requests. Any contributions to improve the implementations, add new features, or enhance documentation are welcome!
+These resources were absolutely crucial in helping me making this project so please do check them out!
 
+Neural Net:
 
+https://www.youtube.com/watch?v=sK9AbJ4P8ao
+https://millermattson.com/dave/?p=54
+
+SFML Integration:
+
+https://www.youtube.com/watch?v=Zrrnqd0rCXg
+https://github.com/Kofybrek/Neural-network/tree/Main
+
+Thank you so much for going through the repo and hit me up if you want to collaborate on more interesting projects like these.
