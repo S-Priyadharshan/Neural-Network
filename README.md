@@ -171,6 +171,8 @@ and this is an example of it learning
 
 <img width="1600" height="631" alt="image" src="https://github.com/user-attachments/assets/6fd21eff-2763-4257-aa81-fb0c7b263bad" />
 
+<img width="1597" height="639" alt="image" src="https://github.com/user-attachments/assets/6e432a71-71a0-474c-ac03-46d1d94b1c4a" />
+
 Code Snippet:
 
 ```c++
